@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* index.css */
+
+
+/* Adjust font sizes for responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        @apply text-3xl; /* Tailwind utility for font size */
+    }
+
+    h2 {
+        @apply text-2xl; /* Tailwind utility for font size */
+    }
+
+    p {
+        @apply text-base; /* Tailwind utility for font size */
+    }
+}
+
+/* Update button styles with a gradient and border */
+.button {
+    @apply bg-gradient-to-r from-yellow-400 to-red-600 text-white font-bold py-2 px-4 rounded border border-transparent transition-all duration-300 shadow-md;
+}
+
+    /* Add hover effect with a darker gradient */
+    .button:hover {
+        @apply bg-gradient-to-r from-yellow-500 to-red-700;
+    }
+
+/* Add hover effects to thumbnails with a brighter shadow */
+.thumbnail:hover {
+    @apply transform scale-105 shadow-lg;
+}
+
+/* Customize drawer with a colorful border */
+.drawer {
+    @apply fixed bottom-0 left-0 right-0 bg-white p-4 transition-transform duration-300 border-t-4 border-red-600;
+}
+
+/* Update close button with a colorful background */
+.drawer-close {
+    @apply absolute top-0 right-0 m-4 p-2 bg-gradient-to-r from-yellow-400 to-red-600 rounded-full shadow-md;
+}
+
+/* Update error message with a gradient background */
+.error-message {
+    @apply fixed bottom-0 left-0 right-0 bg-gradient-to-r from-yellow-400 to-red-600 text-white text-center py-2;
+}

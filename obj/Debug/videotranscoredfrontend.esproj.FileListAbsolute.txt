@@ -1,0 +1,1 @@
+C:\Users\samba\source\repos\DynamicVideoTranscoderFunctionApp\VideoTranscoredFrontEnd\obj\Debug\videotranscoredfrontend.esproj.CoreCompileInputs.cache
