@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import getUserData from '../utils/UserDataHandler';
 import { getSessionData } from '../utils/SessionStorageHandler';
-import { PRODUCTION_URL, DEVELOPMENT_URL } from '../VariableTable';
+import { PRODUCTION_URL} from '../VariableTable';
 import '../styles/DetailStylesheet.css';
 import MetricsModal from '../components/MetricsModal';
 import { openDatabase, addData, getAllData } from '../utils/IndexDBMetricsController'; // Import IndexedDB functions
-import { ReactComponent as Logo } from '../styles/icons/logo.drawio.svg';
 
 //styles
 import Header from '../components/Header';

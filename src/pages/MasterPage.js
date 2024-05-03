@@ -4,8 +4,7 @@ import getUserData from '../utils/UserDataHandler';
 import { setSessionData, getSessionData } from '../utils/SessionStorageHandler';
 import { updateBandwidth, measureConnectionSpeed } from '../utils/BandwithHandler';
 import 'whatwg-fetch';
-import { PRODUCTION_URL, DEVELOPMENT_URL } from '../VariableTable';
-import {ReactComponent as Logo} from '../styles/icons/logo.drawio.svg';
+import { PRODUCTION_URL } from '../VariableTable';
 
 //styles
 import  Header  from '../components/Header';
