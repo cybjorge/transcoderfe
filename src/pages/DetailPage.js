@@ -195,7 +195,7 @@ const DetailPage = () => {
     return (
         <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-white text-gray-800 relative">
             {/* Header */}
-            <Header pageTitle="Detail Page" />
+            <Header pageTitle="Dynamic Tramscoder App" />
             {/* Main content */}
             <div className="flex justify-center items-center mb-8">
                 <div className="w-95vw max-w-6xl text-center px-4">
