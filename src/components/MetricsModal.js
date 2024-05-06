@@ -56,6 +56,8 @@ const MetricsModal = ({ onClose, onPin, pinned, videoId, sessionID }) => {
                     playbackEnvironment: item.playbackEnvironment || '',
                     sessionFromID,
                     bytesUsed: parseFloat(item.bytesUsed) / 1000000 || 0, // Convert bytes to MB
+                    transcodingDuration: item.transcodingDuration || 0,
+                    debugDuration: parseFloat(debugDuration) || 0,
                     // Add more properties as needed for other charts
                 });
             });
@@ -109,8 +111,8 @@ const MetricsModal = ({ onClose, onPin, pinned, videoId, sessionID }) => {
                 return acc;
             }, {});
 
-                // Prepare data for the pie chart
-            const bitrateLabels = Object.keys(bitrateCounts);
+            // Prepare data for the pie chart
+            const bitrateLabels = Object.keys(bitrateCounts).map(bitrate => bitrate + 'M');;
             const bitrateData = Object.values(bitrateCounts);
 
             // Create a new chart instance for bitrate distribution
@@ -120,12 +122,19 @@ const MetricsModal = ({ onClose, onPin, pinned, videoId, sessionID }) => {
             data: {
                 labels: bitrateLabels,
                 datasets: [{
+                    label: 'Bitrate Distribution Count',
                     data: bitrateData,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.7)',
                         'rgba(54, 162, 235, 0.7)',
                         'rgba(255, 206, 86, 0.7)',
-                        // Add more colors as needed
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(23, 255, 24, 0.7)',
+                        'rgba(90, 200, 250, 0.7)',
+                        'rgba(200, 150, 80, 0.7)',
+                        'rgba(120, 200, 100, 0.7)'
                     ],
                     borderColor: 'rgba(255, 255, 255, 1)',
                     borderWidth: 1
@@ -162,7 +171,47 @@ const MetricsModal = ({ onClose, onPin, pinned, videoId, sessionID }) => {
                 },
                 aspectRatio: chartWidth / chartHeight,
             });
-            
+
+            // Convert duration strings to seconds
+            const transcodingDurationsInSeconds = filteredDataInterval.map(dataPoint => {
+                const durationParts = dataPoint.transcodingDuration.split(':').map(parseFloat);
+                console.log(durationParts);
+                //const seconds = durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2];
+                //const milliseconds = parseFloat(durationParts[3]);
+                //return seconds + milliseconds / 10000000;
+                return durationParts[2]
+            });
+            const debugDurationsInSeconds = filteredDataInterval.map(dataPoint =>  dataPoint.debugDuration);
+            const transcodingDurationCtx = document.getElementById('transcodingDurationChart').getContext('2d');
+            chartRefs.current[4] = new Chart(transcodingDurationCtx, {
+                type: 'line', // Change the chart type to 'line' for a point chart
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Transcoding Duration (seconds)',
+                        data: transcodingDurationsInSeconds,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 0.7)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }, {
+                        label: 'Chunk Length (seconds)', // Label for the second line
+                        data: debugDurationsInSeconds,
+                        pointBackgroundColor: 'rgba(255, 99, 132, 0.7)', // Color for points of the second line
+                        borderColor: 'rgba(255, 99, 132, 1)', // Color for the second line
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                },
+                aspectRatio: chartWidth / chartHeight,
+            });
         }
     }, [chartData, sessionID, interval]);
 
@@ -195,6 +244,8 @@ const MetricsModal = ({ onClose, onPin, pinned, videoId, sessionID }) => {
                         {/* Add more charts here... */}
                         <canvas id="bytesUsedChart" className="w-full mb-4"></canvas>
                         <canvas id="bitrateDistributionChart" className="w-full mb-4"></canvas>
+                        <canvas id="transcodingDurationChart" className="w-full mb-4"></canvas>
+
 
                     </div>
                     {/* Modal footer */}
