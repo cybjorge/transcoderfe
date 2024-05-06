@@ -1,6 +1,5 @@
 {
     "navigationFallback": {
-      "rewrite": "/",
-      "exclude": ["/detail/*"]
+      "rewrite": "/"
     }
   }
