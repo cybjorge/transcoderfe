@@ -102,60 +102,41 @@ const MetricsModal = ({ onClose, onPin, pinned, videoId, sessionID }) => {
             // Extract labels and data for the bitrate chart
             const labels = filteredDataInterval.map(dataPoint => dataPoint.time);
 
-            //const bitrateData = filteredDataInterval.map(dataPoint => dataPoint.bitrate);
+            const bitrates = filteredDataInterval.map(dataPoint => dataPoint.bitrate);
+            // Count occurrences of each bitrate
+            const bitrateCounts = bitrates.reduce((acc, bitrate) => {
+                acc[bitrate] = (acc[bitrate] || 0) + 1;
+                return acc;
+            }, {});
 
-            //// Create a new chart instance for bitrate
-            //const bitrateCtx = document.getElementById('bitrateChart').getContext('2d');
-            //chartRefs.current[0] = new Chart(bitrateCtx, {
-            //    type: 'line', // Use line chart for time series data
-            //    data: {
-            //        labels: labels,
-            //        datasets: [{
-            //            label: 'Bitrate',
-            //            data: bitrateData,
-            //            borderColor: 'rgba(255, 99, 132, 1)', // Red color for the line
-            //            borderWidth: 1
-            //        }]
-            //    },
-            //    options: {
-            //        scales: {
-            //            y: {
-            //                beginAtZero: true
-            //            }
-            //        }
-            //    },
-            //    aspectRatio: chartWidth / chartHeight,
-            //});
+                // Prepare data for the pie chart
+            const bitrateLabels = Object.keys(bitrateCounts);
+            const bitrateData = Object.values(bitrateCounts);
 
-            //// Extract labels and data for the connection speed chart
-            //const connectionSpeedData = filteredDataInterval.map(dataPoint => dataPoint.connectionSpeed);
+            // Create a new chart instance for bitrate distribution
+        const bitrateDistributionCtx = document.getElementById('bitrateDistributionChart').getContext('2d');
+        chartRefs.current[3] = new Chart(bitrateDistributionCtx, {
+            type: 'pie',
+            data: {
+                labels: bitrateLabels,
+                datasets: [{
+                    data: bitrateData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        // Add more colors as needed
+                    ],
+                    borderColor: 'rgba(255, 255, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                aspectRatio: chartWidth / chartHeight,
+                // Add more options if necessary
+            }
+        });
 
-            //// Create a new chart instance for connection speed
-            //const connectionSpeedCtx = document.getElementById('connectionSpeedChart').getContext('2d');
-            //chartRefs.current[1] = new Chart(connectionSpeedCtx, {
-            //    type: 'bar', // Use bar chart for connection speed
-            //    data: {
-            //        labels: labels,
-            //        datasets: [{
-            //            label: 'Connection Speed',
-            //            data: connectionSpeedData,
-            //            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Blue color for bars
-            //            borderColor: 'rgba(54, 162, 235, 1)',
-            //            borderWidth: 1
-            //        }]
-            //    },
-            //    options: {
-            //        scales: {
-            //            y: {
-            //                beginAtZero: true
-            //            }
-            //        }
-            //    },
-            //    aspectRatio: chartWidth / chartHeight,
-            //});
-
-            // Add more charts here...
-            // Extract labels and data for the connection speed chart
 
             const bytesUsed = filteredDataInterval.map(dataPoint => dataPoint.bytesUsed);
             // Create a new chart instance for connection speed
@@ -213,6 +194,7 @@ const MetricsModal = ({ onClose, onPin, pinned, videoId, sessionID }) => {
                         {/*<canvas id="connectionSpeedChart" className="w-full"></canvas>*/}
                         {/* Add more charts here... */}
                         <canvas id="bytesUsedChart" className="w-full mb-4"></canvas>
+                        <canvas id="bitrateDistributionChart" className="w-full mb-4"></canvas>
 
                     </div>
                     {/* Modal footer */}
